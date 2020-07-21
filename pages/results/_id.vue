@@ -1,11 +1,22 @@
 <template>
   <div class="wellcome">
-    <div class="title">
+    <div class="title ">
         <div>
             <img :src="this.daily_bilten.report.flag">
             <h2>Covid 19 tracker</h2>
             <h4>{{$route.params.id}}</h4>
-            <h5>Last updated: {{new Date() | datify}}</h5>
+        </div>
+        <div class="toast show h-50  mt-0 float-right" role="alert" aria-live="assertive" aria-atomic="true" >
+            <div class="toast-header ">
+                <strong class="mr-auto text-danger" >COVID-19!</strong>
+                <small class="text-dark">{{new Date() | datify}}</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body text-dark">
+                Help stop the spread of coronavirus by keeping your distance. Stay safe!
+            </div>
         </div>
     </div>
     <div class="main_info">
@@ -170,16 +181,29 @@ export default {
     color: white;
 }
 .wellcome{
-    background-color: black;
+    background-image: url("https://cdn.pixabay.com/photo/2020/03/14/08/09/coronavirus-4929978_1280.png");
+    background-size:cover;
     width: 100%;
     height: 100vh;
 }
 .title{
+    display: flex;
+    justify-content: space-between;
     padding: 50px;
     height: 38%;
     position: relative;
     img{
         margin-bottom: 20px;
+    }
+    animation-name: fadeIn;
+    animation-duration: 4s;
+}
+@keyframes fadeIn{
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity:1;
     }
 }
 .f_info{
@@ -192,6 +216,7 @@ export default {
     width: 90%;
     position: absolute;
     margin-top: -180px;
+    
     .death{
         @include grid_position(1,2,1,2);
         h3{
@@ -227,6 +252,16 @@ export default {
 .stat_img{
     height: 130px;
     width: 130px;
+    
+}
+@keyframes slide{
+    0%{
+       
+        top:-100px;
+    }
+    100%{
+        top:0px;
+    }
 }
 .live{
     @include centriranje;
@@ -235,6 +270,10 @@ export default {
         margin-top: 10px;
         font-weight: 700;
     }
+    position: relative;
+    animation-name: slide;
+    animation-duration: 1s;
+    animation-fill-mode: none;
 }
 .arrow{
     width: 20px;
@@ -244,6 +283,7 @@ export default {
 .add_info{
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 .flag{
     width: 40px;
@@ -254,5 +294,22 @@ export default {
     height: 370px;
     overflow:scroll;
     overflow-x: hidden;
+}
+#bootstrap-overrides .toast-body {
+    color: black;
+}
+.live:hover{
+    animation-name: zumiraj;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    cursor: pointer;
+}
+@keyframes zumiraj{
+    50%{
+        transform: scale(0.5);
+    }
+    100%{
+        transform: scale(1);
+    }
 }
 </style>

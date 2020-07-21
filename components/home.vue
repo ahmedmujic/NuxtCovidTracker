@@ -33,7 +33,6 @@ export default {
     height: 100vh;
     @include centriranje;
     flex-direction: column;
-    border: 1px solid red;
     h1{
         font-weight: 700;
         font-size: 90px;
