@@ -1,30 +1,110 @@
 <template>
   <div class="wellcome">
-      <!-- Selam alejk{{$route.params.id}}
-      {{$store.state.daily_bil}} -->
     <div class="title">
         <div>
+            <img :src="this.daily_bilten.report.flag">
             <h2>Covid 19 tracker</h2>
             <h4>{{$route.params.id}}</h4>
-            <h5>Last updated: {{this.daily_bilten.locations[0].last_updated | datify}}</h5>
+            <h5>Last updated: {{new Date() | datify}}</h5>
         </div>
     </div>
     <div class="main_info">
         <div class="f_info">
-            <div class="death">
-                <h2>DEATHS</h2>
-                <h3>{{this.daily_bilten.locations[0].latest.deaths}} </h3>
+            <div class="death live">
+                <img class="stat_img" src="https://image.flaticon.com/icons/svg/2713/2713357.svg">
+                <h3>{{this.daily_bilten.report.deaths}} </h3>
+            </div>
+            <div class="rec live">
+                <img class="stat_img" src="https://image.flaticon.com/icons/svg/3182/3182152.svg">
+                <h3>{{this.daily_bilten.report.recovered}} </h3>
+            </div>
+            <div class="cases live">
+                <img class="stat_img" src="https://image.flaticon.com/icons/svg/2659/2659980.svg">
+                <h3>{{this.daily_bilten.report.cases}} </h3>
+            </div>
+            <div class="critic live">
+                <img class="stat_img" src="https://image.flaticon.com/icons/svg/3209/3209018.svg">
+                <h3>{{this.daily_bilten.report.active_cases[0].criticalStates}} </h3>
             </div>
         </div>
     </div>
+    <div class="table1">
+        <table class="table">
+            <thead>
+                <tr>
+                <th>State</th>
+                <th>Total Cases</th>
+                <th>Total Deaths</th>
+                <th>Active cases</th>
+                <th>Recovered</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>United States of America</td>
+                <td>
+                    <div class="add_info">
+                        {{usa.TotalCases}}
+                            <div>
+                                <img class="arrow" :src=" usa.NewCases>0 ? require('@/assets/images/arrow_up.png') : require('@/assets/images/arrow_down.png') ">{{usa.NewCases | numerise}}
+                            </div>
+                    </div>
+                </td>
+                <td >
+                    <div class="add_info">
+                        {{usa.TotalDeaths}}
+                            <div>
+                                <img class="arrow" :src=" usa.NewCases>0 ? require('@/assets/images/arrow_up.png') : require('@/assets/images/arrow_down.png') ">{{usa.NewDeaths | numerise}}
+                            </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="add_info">
+                        {{usa.ActiveCases}}
+                            <div>
+                                <img class="arrow" :src=" usa.NewCases>0 ? require('@/assets/images/arrow_up.png') : require('@/assets/images/arrow_down.png') ">{{usa.NewCases | numerise}}
+                            </div>
+                    </div>
+                </td>
+                <td>{{(usa.TotalCases)-10}}</td>
+                </tr>
+                <tr v-for="zemlja in zemlje" :key="zemlja.index">
+                    <td>
+                        <div class="add_info">
+                            <p>{{zemlja.country}}</p>
+                            <img class="flag" :src="zemlja.flag">
+                        </div>
+                    </td>
+                    <td>
+                        {{zemlja.cases}}
+                    </td>
+                    <td>{{zemlja.deaths}}</td>
+                    <td>
+                        <div class="add_info">
+                            {{zemlja.active_cases[0] | sum}}
+                            <div>
+                                <img class="arrow" :src=" zemlja.recovered < 0 ? require('@/assets/images/arrow_up.png') : require('@/assets/images/arrow_down.png') ">{{zemlja.recovered}}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        {{zemlja.recovered}}
+                    </td>
+                    <td></td>
+                </tr>
+                
+            </tbody>
+        </table>
+     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     
-    middleware:'find'
-    ,
+    middleware:'find',
     data(){
         return{
             daily_bilten: this.$store.state.daily_bil
@@ -32,11 +112,55 @@ export default {
     },
     filters:{
         datify(date){
+            
             let modified = new Date(date)
             return modified.getDate() + '/' + modified.getMonth() + '/' + modified.getFullYear()
+        },
+        numerise(num){
+            return num.substring(1,num.length)
+        },
+        sum(num){
+            return (num.currently_infected_patients+num.inMidCondition+num.criticalStates)
+        }
+    },
+    async asyncData(){
+        {
+            const amer_data = await axios.get(`https://covid19api.io/api/v1/CasesInAllUSStates`)
+            const china = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/China`)
+            const germany = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/Germany`)
+            const india = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/India`)
+            const canada = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/Canada`)
+            const brazil = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/Brazil`)
+            const argentina = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/Argentina`)
+            const mex = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/Mexico`)
+            const spain = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/Spain`)
+            return{
+                usa:amer_data.data.data[0].table[0],
+                zemlje:[
+                    china.data.report,
+                    germany.data.report,
+                    india.data.report,
+                    canada.data.report,
+                    brazil.data.report,
+                    argentina.data.report,
+                    mex.data.report,
+                    spain.data.report
+                ]
+
+            }
+            
+        }
+        },
+    methods:{
+        difference:function(cases,recovered){
+            return (cases-recovered)
         }
     }
-}
+    }
+    
+    
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -46,37 +170,89 @@ export default {
     color: white;
 }
 .wellcome{
-    border:1px solid red;
+    background-color: black;
     width: 100%;
     height: 100vh;
 }
 .title{
     padding: 50px;
     height: 38%;
-    background-image: url("https://cdn.pixabay.com/photo/2020/02/10/04/56/virus-4835301_960_720.jpg");
-    background-size: cover;
-    background-position-y:center;
     position: relative;
+    img{
+        margin-bottom: 20px;
+    }
 }
 .f_info{
     width: 15%;
-    height: 55%;
+    height: 25%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
     gap: 1px 1px;
-    width: 40%;
-    border: 4px solid green;
+    width: 90%;
     position: absolute;
-    margin-top: -50px;
+    margin-top: -180px;
     .death{
         @include grid_position(1,2,1,2);
-        border:1px solid red;
+        h3{
+            color: rgb(255, 0, 0);
+        }
+    }
+    .rec{
+        @include grid_position(2,3,1,2);
+        h3{
+            color: rgb(67, 190, 88);
+        }
+    }
+    .cases{
+        @include grid_position(3,4,1,2);
+        h3{
+            color: rgb(172, 175, 13);
+        }
+    }
+    .critic{
+        @include grid_position(4,5,1,2);
+        h3{
+            color: rgb(133, 0, 0);
+        }
     }
 }
 .main_info{
     @include centriranje;
     margin-top:10%;
+    h2{
+            opacity: 0.5;
+        }
 }
-
+.stat_img{
+    height: 130px;
+    width: 130px;
+}
+.live{
+    @include centriranje;
+    flex-direction: column;
+    h3{
+        margin-top: 10px;
+        font-weight: 700;
+    }
+}
+.arrow{
+    width: 20px;
+    height: 20px;
+    margin-left:5px;
+}
+.add_info{
+    display: flex;
+    flex-direction: row;
+}
+.flag{
+    width: 40px;
+    height: 25px;
+    margin-left: 10px;
+}
+.table1{
+    height: 370px;
+    overflow:scroll;
+    overflow-x: hidden;
+}
 </style>

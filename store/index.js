@@ -1,12 +1,16 @@
 
 
 export const state = () => ({
-    daily_bil: {}
+    daily_bil: {},
+    usa_report:[{}]
   });
   
   export const mutations = {
     add(state, daily){
       state.daily_bil=daily;
+    },
+    add_usa(state, usa){
+      state.usa_report=usa
     }
   };
   
