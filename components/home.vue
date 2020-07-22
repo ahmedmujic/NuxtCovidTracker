@@ -186,4 +186,36 @@ export default {
     flex-direction: row ;
     align-items: center;
 }
+@media screen and (max-width: 600px) {
+  .wellcome {
+    h1{
+        font-size: 50px;
+    }
+  }
+  #formma{
+      left: 10px;
+  }
+  @keyframes trans{
+    from{
+        transform: translateY(-100px);
+        opacity: 0;
+        
+    }
+    to{
+        transform: translateY(100px);
+        opacity: 1;
+    }
+    }
+    @keyframes trans_non{
+        from{
+            transform: translateY(100px);
+            opacity: 1;
+        }
+        to{
+            transform: translateY(-100px);
+            opacity: 0;
+        }
+    }
+  
+}
 </style>

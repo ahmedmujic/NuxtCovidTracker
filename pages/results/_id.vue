@@ -35,7 +35,7 @@
             </div>
             <div class="critic live">
                 <img class="stat_img" src="https://image.flaticon.com/icons/svg/3209/3209018.svg">
-                <h3 >{{nullCheck(this.daily_bilten.report.active_cases)}} </h3>
+                <h3 >{{nullCheck(this.daily_bilten.report.active_cases.length,this.daily_bilten.report)}} </h3>
             </div>
         </div>
     </div>
@@ -133,8 +133,8 @@ export default {
         difference:function(cases,recovered){
             return (cases-recovered)
         },
-        nullCheck:function(data){
-            return data.length>0 ? data.criticalStates :
+        nullCheck:function(len,data){
+            return len > 0 ? data.active_cases[0].criticalStates :
             'Informations about patients in critical states are not available. '
         }
     }

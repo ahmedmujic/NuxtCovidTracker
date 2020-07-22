@@ -217,4 +217,21 @@ hr{
   height: 2px;
   background-color: rgb(50,51,119);
 }
+@media screen and (max-width: 600px) {
+  .covid_img img {
+    display: none;
+  }
+  .facts h1{
+      font-size: 60px;
+  }
+  .num_info{
+    display: flex;
+    flex-direction: column;
+
+  }
+  .ul_content{
+    width: 100% !important;
+  }
+  
+}
 </style>
