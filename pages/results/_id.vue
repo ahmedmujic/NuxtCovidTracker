@@ -35,7 +35,7 @@
             </div>
             <div class="critic live">
                 <img class="stat_img" src="https://image.flaticon.com/icons/svg/3209/3209018.svg">
-                <h3>{{this.daily_bilten.report.active_cases[0].criticalStates}} </h3>
+                <h3 >{{nullCheck(this.daily_bilten.report.active_cases)}} </h3>
             </div>
         </div>
     </div>
@@ -58,9 +58,7 @@
                             <p>{{zemlja.country}}</p>
                         </div>
                     </td>
-                    <td>
-                        {{zemlja.cases}}
-                    </td>
+                    <td>{{zemlja.cases}}</td>
                     <td>{{zemlja.deaths}}</td>
                     <td>
                         <div class="add_info">
@@ -73,7 +71,6 @@
                     <td>
                         {{zemlja.recovered}}
                     </td>
-                    <td></td>
                 </tr>
                 
             </tbody>
@@ -116,7 +113,6 @@ export default {
             const brazil = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/Brazil`)
             const argentina = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/Argentina`)
             const mex = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/Mexico`)
-            const spain = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/Spain`)
             return{
                 usa:amer_data.data.data[0].table[0],
                 zemlje:[
@@ -126,8 +122,7 @@ export default {
                     canada.data.report,
                     brazil.data.report,
                     argentina.data.report,
-                    mex.data.report,
-                    spain.data.report
+                    mex.data.report
                 ]
 
             }
@@ -137,6 +132,10 @@ export default {
     methods:{
         difference:function(cases,recovered){
             return (cases-recovered)
+        },
+        nullCheck:function(data){
+            return data.length>0 ? data.criticalStates :
+            'Informations about patients in critical states are not available. '
         }
     }
     }
@@ -150,11 +149,14 @@ export default {
 @import '@/assets/main.scss';
 *{
     font-family: $font-family;
-    color: white;
+    color: black;
+    
 }
 .wellcome{
-    background-image: url("https://cdn.pixabay.com/photo/2020/03/14/08/09/coronavirus-4929978_1280.png");
-    background-size:cover;
+    background-image: url('./images1/cor_back1.svg');
+    background-size: cover;
+    background-position-x: 820px;
+    background-repeat: no-repeat;
     width: 100%;
     height: 100vh;
 }
@@ -245,7 +247,7 @@ export default {
     position: relative;
     animation-name: slide;
     animation-duration: 1s;
-    animation-fill-mode: none;
+    animation-fill-mode: forwards;
 }
 .arrow{
     width: 20px;
@@ -271,7 +273,7 @@ export default {
 #bootstrap-overrides .toast-body {
     color: black;
 }
-.live:hover{
+.stat_img:hover{
     animation-name: zumiraj;
     animation-duration: 1s;
     animation-fill-mode: forwards;

@@ -1,27 +1,27 @@
 <template>
   <div>
     <div class="bcg">
-    <div class="container">
-      <nuxt/>
-      <home></home>
-    </div>
-    <div class="info1" id="inf">
-      <div class="facts">
-        <h1>COVID-19 FACTS</h1>
-        <div class="text-dark basic_text">
-        <p >Coronaviruses are viruses that circulate among animals with some of them also known to infect humans.</p>
-        <p>The incubation period for COVID-19 (i.e. the time between exposure to the virus and onset of symptoms) is<br> currently estimated to be between one and 14 days. </p>
-        <p>Symptoms of human coronaviruses can:<br>
-            &bull; take up to 14 days to appear after exposure to the virus<br>
-            &bull; be very mild or more serious<br>
-            &bull; vary from person to person<br>
-        </p>
+      <div class="container">
+        <nuxt/>
+        <home></home>
+      </div>
+      <div class="info1" id="inf">
+        <div class="facts">
+          <h1>COVID-19 FACTS</h1>
+          <div class="text-dark basic_text">
+            <p >Coronaviruses are viruses that circulate among animals with some of them also known to infect humans.</p>
+            <p>The incubation period for COVID-19 (i.e. the time between exposure to the virus and onset of symptoms) is<br> currently estimated to be between one and 14 days. </p>
+            <p>Symptoms of human coronaviruses can:<br>
+                &bull; take up to 14 days to appear after exposure to the virus<br>
+                &bull; be very mild or more serious<br>
+                &bull; vary from person to person<br>
+            </p>
+          </div>
+        </div>
+        <div class="covid_img mt-5">
+          <img src="https://cdn4.iconfinder.com/data/icons/coronavirus-information/128/Artboard_12-256.png" >
         </div>
       </div>
-      <div class="covid_img mt-5">
-        <img src="https://cdn4.iconfinder.com/data/icons/coronavirus-information/128/Artboard_12-256.png" >
-      </div>
-    </div>
     </div>
     <div id="value">
       <h1>Total cases in world</h1>
@@ -49,8 +49,8 @@ export default {
   },
   data(){
     return{
-      globally:0,
-      infos:this.$store.state.infos
+      globally: 0,
+      infos: this.$store.state.infos
     }
   },
     created () {
@@ -78,9 +78,6 @@ export default {
       },
       handleScroll: function (event) {
         let $this=this;
-        console.log("window"+(window.scrollY + window.innerHeight))
-          console.log(document.getElementById("value").offsetTop)
-          console.log(b)
         window.onscroll = function(ev) {
         if (((window.scrollY + window.innerHeight) >= document.getElementById("show").offsetTop) && b==0) {
           
@@ -98,31 +95,42 @@ export default {
     },
     
     animateValue:function (id, start, end, duration) {
-    if (process.browser){
-    b++;
-    var obj = document.getElementById(id);
-    var range = end - start;
-    var minTimer = 50;
-    var stepTime = Math.abs(Math.floor(duration / range));
-    stepTime = Math.max(stepTime, minTimer);
-    var startTime = new Date().getTime();
-    var endTime = startTime + duration;
-    var timer;
-    function run() {
-        var now = new Date().getTime();
-        var remaining = Math.max((endTime - now) / duration, 0);
-        var value = Math.round(end - (remaining * range));
-        obj.innerHTML = value;
-        if (value == end) {
-            clearInterval(timer);
+      if (process.browser){
+      b++;
+      var objekat_time = document.getElementById(id);
+      // razlika krajnje i pocetne vrijednosti
+      var range = end - start;
+      // minimalno vrijeme trajanja animacije
+      var minTimer = 50;
+      // vrijeme za svaki korak tj vrijeme za svaki broj 
+      var stepTime = Math.abs(Math.floor(duration / range));
+      //ukoliko je vrijeme manje od minimalnog uzima se predodredjeno minimalno vrijeme
+      stepTime = Math.max(stepTime, minTimer);
+      //pocetak
+      var startTime = new Date().getTime();
+      //kraj
+      var endTime = startTime + duration;
+      var timer;
+      function run() {
+          var now = new Date().getTime();
+          //preostalo vremena za animaciju
+          var remaining = Math.max((endTime - now) / duration, 0);
+          // trenutna vrijednost broja 
+          var value = Math.round(end - (remaining * range));
+          // upis u DOM 
+          objekat_time.innerHTML = value;
+          // brojevi su dosli do kraja tj kad remainig dosegne onda ce remaining * range biti 0, zatim u tom trenutku je value jednak nasoj zeljenoj vrijednosti 
+          // i tu se zaustavlja interval 
+          if (value == end) {
+              clearInterval(timer);
+          }
+      }
+      //pocetak animacije 
+      timer = setInterval(run, stepTime);
+      run();
         }
+      },
     }
-    timer = setInterval(run, stepTime);
-    run();
-    }
-    },
-    
-}
   
 }
 </script>
@@ -145,13 +153,6 @@ export default {
   max-width: 100%;
   width: 100vw;
   @include centriranje;
-  // img {
-  //   position:absolute;
-  //   top: 0;
-  //   right: 0;
-  //   margin-top: 60px;
-  //   margin-right: 40px;
-  // }
 }
 .container{
   height: 100vh;
@@ -163,9 +164,7 @@ export default {
   h1{
     font-size: 70px;
     font-weight: 800;
-
   }
-  
 }
 .covid_img{
     height: 100%;
