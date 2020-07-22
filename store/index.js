@@ -2,7 +2,15 @@
 
 export const state = () => ({
     daily_bil: {},
-    usa_report:[{}]
+    usa_report:[{}],
+    global_cases:0,
+    infos:[
+      {id:'value1',info:'Total Deaths'},
+      {id:'value2',info:'Total Cases'},
+      {id:'value3',info:'Total Recovered'},
+      {id:'value4',info:'New Cases Today'},
+      {id:'value5',info:'Total Affected Countries'}
+    ]
   });
   
   export const mutations = {

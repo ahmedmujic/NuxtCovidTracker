@@ -51,39 +51,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                <td>United States of America</td>
-                <td>
-                    <div class="add_info">
-                        {{usa.TotalCases}}
-                            <div>
-                                <img class="arrow" :src=" usa.NewCases>0 ? require('@/assets/images/arrow_up.png') : require('@/assets/images/arrow_down.png') ">{{usa.NewCases | numerise}}
-                            </div>
-                    </div>
-                </td>
-                <td >
-                    <div class="add_info">
-                        {{usa.TotalDeaths}}
-                            <div>
-                                <img class="arrow" :src=" usa.NewCases>0 ? require('@/assets/images/arrow_up.png') : require('@/assets/images/arrow_down.png') ">{{usa.NewDeaths | numerise}}
-                            </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="add_info">
-                        {{usa.ActiveCases}}
-                            <div>
-                                <img class="arrow" :src=" usa.NewCases>0 ? require('@/assets/images/arrow_up.png') : require('@/assets/images/arrow_down.png') ">{{usa.NewCases | numerise}}
-                            </div>
-                    </div>
-                </td>
-                <td>{{(usa.TotalCases)-10}}</td>
-                </tr>
                 <tr v-for="zemlja in zemlje" :key="zemlja.index">
                     <td>
-                        <div class="add_info">
+                        <div class="add_flag_info">
+                            <img class="flag mb-3 mr-3" :src="zemlja.flag">
                             <p>{{zemlja.country}}</p>
-                            <img class="flag" :src="zemlja.flag">
                         </div>
                     </td>
                     <td>
@@ -284,6 +256,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
+    text-align: center;
 }
 .flag{
     width: 40px;
@@ -311,5 +284,10 @@ export default {
     100%{
         transform: scale(1);
     }
+}
+.add_flag_info{
+    display: flex;
+    align-items: center;
+    
 }
 </style>
