@@ -1,4 +1,4 @@
-# AutoKuca
+# Covid Tracker
 
 ## Build Setup
 
