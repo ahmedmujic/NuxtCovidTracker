@@ -1,7 +1,7 @@
 <template>
   <div class="wellcome">
     <div class="title ">
-        <div>
+        <div class="title_h">
             <img :src="this.daily_bilten.report.flag">
             <h2>Covid 19 tracker</h2>
             <h4>{{$route.params.id}}</h4>
@@ -63,7 +63,7 @@
                     <td>
                         <div class="add_info">
                             {{zemlja.active_cases[0] | sum}}
-                            <div>
+                            <div class="add_info_ar">
                                 <img class="arrow" :src=" zemlja.recovered < 0 ? require('@/assets/images/arrow_up.png') : require('@/assets/images/arrow_down.png') ">{{zemlja.recovered}}
                             </div>
                         </div>
@@ -105,7 +105,6 @@ export default {
     },
     async asyncData(){
         {
-            const amer_data = await axios.get(`https://covid19api.io/api/v1/CasesInAllUSStates`)
             const china = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/China`)
             const germany = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/Germany`)
             const india = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/India`)
@@ -114,7 +113,6 @@ export default {
             const argentina = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/Argentina`)
             const mex = await axios.get(`https://covid19api.io/api/v1/ReportsByCountries/Mexico`)
             return{
-                usa:amer_data.data.data[0].table[0],
                 zemlje:[
                     china.data.report,
                     germany.data.report,
@@ -268,7 +266,7 @@ export default {
 .table1{
     height: 370px;
     overflow:scroll;
-    overflow-x: hidden;
+    overflow-x: auto;
 }
 #bootstrap-overrides .toast-body {
     color: black;
@@ -278,6 +276,9 @@ export default {
     animation-duration: 1s;
     animation-fill-mode: forwards;
     cursor: pointer;
+}
+li{
+    text-align: center;
 }
 @keyframes zumiraj{
     50%{
@@ -291,5 +292,49 @@ export default {
     display: flex;
     align-items: center;
     
+}
+@media screen and (max-width: 767px) {
+  .f_info{
+      display: flex;
+      flex-direction: column;
+      position: relative;
+  }
+  .live{
+      margin: 20px 20px;
+  }
+  .toast{
+      display: none;
+  }
+  .title_h{
+      padding-bottom: 20px;
+  }
+  .death{
+      margin-top: 150px;
+  }
+  .add_info{
+      @include centriranje;
+      flex-direction: column;
+      
+  }
+  .wellcome{
+      background-position-x: -160px;
+  }
+  .add_info_ar{
+      @include centriranje;
+      flex-direction: row;
+  }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  .f_info{
+      position: relative;
+  }
+  .wellcome{
+      background-position-x: -160px;
+  }
+  .main_info{
+      margin-top: 120px;
+      margin-bottom: 50px;
+  }
+
 }
 </style>

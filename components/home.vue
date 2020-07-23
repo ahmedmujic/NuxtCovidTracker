@@ -9,7 +9,7 @@
             <div class="main" @submit.prevent="submit">
                 <form class="form-group " id="formma" >
                     <label for="formGroupExampleInput" class="text-muted">In the following field insert your country</label>
-                    <input type="text" class="form-control" id="formGroupExampleInput " placeholder="Country..." v-model="drzava">
+                    <input  class="form-control" id="formGroupExampleInput " placeholder="Country..." v-model="drzava">
                 </form>
             </div>
             <div class="src_img" @click="anim()"> 
@@ -32,7 +32,21 @@ export default {
             validirano:true
         }
     },
+    created () {
+      if (process.browser){
+        window.addEventListener('scroll', this.handleScroll);
+      }
+    },
+    beforeUpdate (){
+      if (process.browser){
+        window.addEventListener('scroll', this.handleScroll);
+      }
+    },
     methods:{
+        handleScroll:function(event){
+            this.clicked=false
+            document.getElementById("formma").setAttribute('class','main-nonvisible')
+        },
         submit(e){
             if(this.validate()){
                 this.$router.push(`results/${this.drzava}`)
@@ -74,6 +88,7 @@ export default {
             }
             else return true
         }
+        
     }
 }
 </script>
@@ -127,8 +142,6 @@ export default {
     animation:trans_non;
     animation-duration: 2s;
     animation-fill-mode: forwards;
-    
-    
 }
 @keyframes trans_non{
     from{
@@ -186,7 +199,7 @@ export default {
     flex-direction: row ;
     align-items: center;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1024px) {
   .wellcome {
     h1{
         font-size: 50px;
@@ -218,4 +231,5 @@ export default {
     }
   
 }
+
 </style>

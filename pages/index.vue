@@ -8,7 +8,7 @@
       <div class="info1" id="inf">
         <div class="facts">
           <h1>COVID-19 FACTS</h1>
-          <div class="text-dark basic_text">
+          <div class="text-dark basic_text txt-f">
             <p >Coronaviruses are viruses that circulate among animals with some of them also known to infect humans.</p>
             <p>The incubation period for COVID-19 (i.e. the time between exposure to the virus and onset of symptoms) is<br> currently estimated to be between one and 14 days. </p>
             <p>Symptoms of human coronaviruses can:<br>
@@ -164,6 +164,7 @@ export default {
   h1{
     font-size: 70px;
     font-weight: 800;
+    padding-left: 10px;
   }
 }
 .covid_img{
@@ -217,7 +218,13 @@ hr{
   height: 2px;
   background-color: rgb(50,51,119);
 }
-@media screen and (max-width: 600px) {
+.txt-f{
+  padding-left:10px;
+}
+ul{
+  outline:none;
+}
+@media screen and (max-width: 767px) {
   .covid_img img {
     display: none;
   }
@@ -231,7 +238,25 @@ hr{
   }
   .ul_content{
     width: 100% !important;
+    padding: 30px 0px 30px 0px;
   }
+
   
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  .txt-f{
+    padding-left: 25px;
+  }
+  .facts h1{
+      padding-left: 25px;
+  }
+  .num_info{
+    display: flex;
+    flex-direction: column;
+  }
+  .ul_content{
+    width: 100% !important;
+    padding: 30px 0px 30px 0px;
+  }
 }
 </style>
